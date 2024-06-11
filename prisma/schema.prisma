@@ -1,0 +1,251 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+ previewFeatures = ["fullTextSearch", "fullTextIndex"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model ProjectStatus {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  description String
+
+  projects Project[]
+
+  @@map("project_status")
+}
+
+model ClientNationality {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  code String
+  country_name String
+
+  clients Client[]
+
+  @@map("client_nationalities")
+}
+
+model FileType {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  mime String @unique
+  name String
+
+  client_files ClientFile[]
+  project_files ProjectFile[]
+
+  @@map("file_types")
+}
+
+model Role {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String @unique
+  description String
+
+  employees Employee[]
+
+  @@map("roles")
+}
+
+model Client {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  company_name String
+  phone String
+  email String @unique
+  address String
+  notes String
+
+  client_nationality_id String
+  client_nationality ClientNationality @relation(fields: [client_nationality_id], references: [id])
+
+  client_folder ClientFolder?
+
+  @@map("clients")
+}
+
+model Project {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  goals String
+  deadline DateTime
+  start_date DateTime
+  costs Int
+
+  project_status_id String
+  project_status ProjectStatus @relation(fields: [project_status_id], references: [id], onDelete: Cascade)
+
+  project_folder ProjectFolder?
+
+  employees EmployeeProject[]
+
+  @@map("projects")
+}
+
+model ProjectFolder {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  project_id String @unique
+  project Project @relation(fields: [project_id], references: [id], onDelete: Cascade)
+
+  client_folder_id String
+  client_folder ClientFolder @relation(fields: [client_folder_id], references: [id], onDelete: Cascade)
+
+  project_files ProjectFile[]
+
+  @@map("project_folders")
+}
+
+model ClientFolder {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  client_id String @unique
+  client Client @relation(fields: [client_id], references: [id], onDelete: Cascade)
+
+  project_folders ProjectFolder[]
+
+  client_files ClientFile[]
+
+  @@map("client_folders")
+}
+
+model ClientFile {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  file_type_id String
+  file_type FileType @relation(fields: [file_type_id], references: [id], onDelete: Cascade)
+
+  client_folder_id String
+  client_folder ClientFolder @relation(fields: [client_folder_id], references: [id], onDelete: Cascade)
+
+  @@map("client_files")
+}
+
+model ProjectFile {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+
+  project_folder_id String
+  project_folder ProjectFolder @relation(fields: [project_folder_id], references: [id], onDelete: Cascade)
+
+  file_type_id String
+  file_type FileType @relation(fields: [file_type_id], references: [id], onDelete: Cascade)
+
+  employees EmployeeProjectFile[]
+
+  @@map("project_files")
+}
+
+model Employee {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  username String @unique
+  full_name String
+  password String
+  is_active Boolean
+
+  role_id String
+  role Role @relation(fields: [role_id], references: [id])
+
+  token Token?
+  authentication Authentication?
+
+  project EmployeeProject[]
+  project_files EmployeeProjectFile[]
+
+  @@map("employees")
+}
+
+model Token {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  access_token String
+
+  employee_id String? @unique
+  employee Employee? @relation(fields: [employee_id], references: [id])
+
+  @@map("tokens")
+}
+
+model Authentication {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  refresh_token String?
+
+  employee_id String? @unique
+  employee Employee? @relation(fields: [employee_id], references: [id])
+
+  @@map("authentications")
+}
+
+model EmployeeProjectFile {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  employee_id String
+  employee Employee @relation(fields: [employee_id], references: [id], onDelete: Cascade)
+
+  project_file_id String
+  project_file ProjectFile @relation(fields: [project_file_id], references: [id], onDelete: Cascade)
+
+  @@map("employee_project_files")
+}
+
+model EmployeeProject {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project_id String
+  project Project @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  employee_id String
+  employee Employee @relation(fields: [employee_id], references:[id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("employee_projects")
+}

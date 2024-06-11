@@ -1,0 +1,11 @@
+scalar UUID
+
+type ProjectStatus {
+  id: String!
+  name: String!
+  description: String
+}
+
+type Query {
+  getProjectStatus: [ProjectStatus!]!
+}

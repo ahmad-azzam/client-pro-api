@@ -1,0 +1,9 @@
+type ClientNationality {
+  id: String!
+  code: String!
+  country_name: String!
+}
+
+type Query {
+  getClientNationalities: [ClientNationality!]!
+}

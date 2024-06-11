@@ -1,0 +1,8 @@
+type Query {
+  getKey: String!
+}
+
+type Mutation {
+  login: Response!
+  logout: Response!
+}

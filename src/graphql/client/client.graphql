@@ -1,0 +1,51 @@
+input ClientArgs {
+  full_name: String!
+  company_name: String!
+  phone_number: String!
+  address: String!
+  email: String!
+  nationality: String!
+  note: String
+  document_name: String
+}
+
+type ClientList {
+  id: String!
+  name: String!
+  company_name: String!
+  phone_number: String!
+  email: String!
+}
+
+type ResponseClientList {
+  data: [ClientList!]!
+  pagination: ResponsePagination!
+}
+
+type ClientDetail {
+  id: String!
+  name: String!
+  company_name: String!
+  phone_number: String!
+  email: String!
+  address: String!
+  nationality: String!
+  projects: [ProjectList!]!
+  documents: [FileList!]!
+}
+
+type Query {
+  getClientList(
+    searchValue: String
+    pagination: TablePaginationArgs
+  ): ResponseClientList!
+  getClientDetail(id: String): ClientDetail!
+}
+
+type Mutation {
+  createClient(payload: ClientArgs!, document: Upload): Response
+  updateClient(id: String!, payload: ClientArgs!): Response
+  deleteClient(id: String!): Response
+  updateFileClient(fileId: String!, name: String!): Response
+  deleteFileClient(fileId: String!): Response
+}

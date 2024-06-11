@@ -1,0 +1,20 @@
+{
+  "fullName_required": "Nama lengkap wajib diisi",
+
+  "companyName_required": "Nama Perusahaan wajib diisi",
+
+  "email_required": "Email wajib diisi",
+  "email_invalid": "Email tidak benar",
+
+  "phoneNumber_required": "Nomor telepon harus diisi",
+
+  "projectDesc_required": "Deskripsi projek wajib diisi",
+
+  "location_required": "Lokasi wajib diisi",
+
+  "browser_required": "Browser wajib diisi",
+
+  "os_required": "OS wajib diisi",
+
+  "platform_required": "Platform wajib diisi"
+}

@@ -1,0 +1,20 @@
+{
+  "fullName_required": "Full Name must be filled",
+
+  "companyName_required": "Company name must be filled",
+
+  "email_required": "Email must be filled",
+  "email_invalid": "Email is not valid",
+
+  "phoneNumber_required": "Phone number must be filled",
+
+  "projectDesc_required": "Project Description must be filled",
+
+  "location_required": "Location must be filled",
+
+  "browser_required": "Browser must be filled",
+
+  "os_required": "OS must be filled",
+
+  "platform_required": "Platform must be filled"
+}

@@ -1,0 +1,38 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/@prisma-portfolio/prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL_PORTFOLIO")
+}
+
+model Form {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  company_name String
+  email String
+  phone_number String
+  project_desc String
+  location String
+  browser String
+  os String
+  platform String
+
+  @@map("contact_us_forms")
+}
+
+model Idds {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name String
+  code String
+
+  @@map("idds")
+}

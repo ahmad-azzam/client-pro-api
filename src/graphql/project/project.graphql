@@ -1,0 +1,78 @@
+input ProjectArgs {
+  name: String!
+  goals: String!
+  deadline: Date!
+  start_date: Date!
+  costs: Int!
+  status: String!
+  client: String
+  members: [String!]!
+}
+
+input ProjectUpdateArgs {
+  id: String!
+  name: String!
+  goals: String!
+  deadline: Date!
+  start_date: Date!
+  costs: Int!
+  status: String!
+  members: [String!]!
+}
+
+input DocumentArgs {
+  access: [String!]!
+  name: String!
+}
+
+type ProjectList {
+  id: String!
+  name: String!
+  start_date: Date!
+  deadline: Date!
+  status: ProjectStatus!
+}
+
+type ResponseProjectList {
+  data: [ProjectList!]!
+  pagination: ResponsePagination!
+}
+
+type ProjectDetail {
+  clientId: String!
+  projectId: String!
+  name: String!
+  costs: Int!
+  deadline: Date!
+  start_date: Date!
+  goals: String!
+  status: ProjectStatus!
+  members: [EmployeeDetail!]!
+  documents: [FileList!]!
+}
+
+type Query {
+  getProjectList(
+    searchValue: String
+    pagination: TablePaginationArgs
+  ): ResponseProjectList!
+  getProjectDetail(id: String!): ProjectDetail!
+}
+
+type Mutation {
+  createProject(
+    payload: ProjectArgs!
+    payloadClient: ClientArgs
+    payloadDocument: DocumentArgs
+    document: Upload
+  ): Response
+  updateStatusProject(projectId: String!, status: String!): Response
+  updateProject(payload: ProjectUpdateArgs!): Response
+  deleteProject(id: String!): Response
+  updateFileProject(
+    fileId: String!
+    name: String!
+    access: [String!]!
+  ): Response
+  deleteFileProject(fileId: String!): Response
+}

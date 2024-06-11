@@ -1,0 +1,18 @@
+scalar Date
+scalar Upload
+
+type Response {
+  message: String
+}
+
+type ResponsePagination {
+  totalPages: Int!
+  totalData: Int!
+  currentPage: Int!
+  currentSize: Int!
+}
+
+input TablePaginationArgs {
+  page_index: Int
+  size: Int = 10
+}

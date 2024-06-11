@@ -1,0 +1,24 @@
+type FileList {
+  id: String!
+  name: String!
+  type: String
+  access: [EmployeeDetail!]
+}
+
+type Query {
+  getLinkFileDownload(id: String!): String!
+}
+
+type Mutation {
+  addDocumentClient(
+    id: String!
+    documentNames: [String!]!
+    documents: [Upload!]!
+  ): Response
+  addDocumentProject(
+    id: String!
+    documentNames: [String!]!
+    documents: [Upload!]!
+    access: [[String!]]
+  ): Response
+}
